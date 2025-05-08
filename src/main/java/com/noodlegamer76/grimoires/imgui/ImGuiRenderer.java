@@ -1,5 +1,6 @@
 package com.noodlegamer76.grimoires.imgui;
 
+import com.noodlegamer76.grimoires.GrimoiresMod;
 import imgui.ImGui;
 import imgui.flag.ImGuiConfigFlags;
 import imgui.gl3.ImGuiImplGl3;
@@ -85,7 +86,7 @@ public class ImGuiRenderer {
             imGuiGl.renderDrawData(ImGui.getDrawData());
         }
         else {
-            System.out.println("ImGui draw data is null");
+            GrimoiresMod.LOGGER.info("ImGui draw data is null");
         }
 
         if (ImGui.getIO().hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {

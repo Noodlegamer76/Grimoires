@@ -39,11 +39,6 @@ public class ImGuiFontLoader {
         } catch (IOException e) {
             throw new RuntimeException("Grimoires: Failed to load Minecraft font for ImGui", e);
         }
-        //File fontFile = new File("C:\\Users\\ab098\\IdeaProjects\\grimoires\\src\\main\\resources\\assets\\grimoires\\fonts\\minecraft_font.ttf");
-        //System.out.println(fontFile.getAbsolutePath());
-        //System.out.println(fontFile.getPath());
-        //System.out.println(fontFile);
-        //return ImGui.getIO().getFonts().addFontFromFileTTF(fontFile.getAbsolutePath(), 16.0f);
     }
 
     public static void uploadFontTexture() {

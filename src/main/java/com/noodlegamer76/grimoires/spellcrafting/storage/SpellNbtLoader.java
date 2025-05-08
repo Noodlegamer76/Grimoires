@@ -12,7 +12,6 @@ import java.nio.ByteBuffer;
 
 public class SpellNbtLoader {
     public static void saveToItem(ItemStack stack, Spell spell) {
-        System.out.println(stack);
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         SpellCodec.encodeSpell(buf, spell);
 
@@ -25,7 +24,6 @@ public class SpellNbtLoader {
     }
 
     public static @Nullable Spell getFromItem(ItemStack stack) {
-        System.out.println(stack);
         SpellData data = stack.get(InitDataComponentType.SPELL_DATA.get());
         if (data == null) return null;
 

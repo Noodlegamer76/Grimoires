@@ -1,6 +1,7 @@
 package com.noodlegamer76.grimoires.spellcrafting.graph;
 
 import com.google.gson.JsonObject;
+import com.noodlegamer76.grimoires.GrimoiresMod;
 import com.noodlegamer76.grimoires.imgui.pins.NodePin;
 import com.noodlegamer76.grimoires.spellcrafting.graph.nodes.Node;
 
@@ -189,7 +190,7 @@ public class Graph {
                 addNode(node, false);
             }
             else {
-                System.out.println("Failed to load node: " + entry.getValue().getAsJsonObject().get("t").getAsString());
+                GrimoiresMod.LOGGER.error("Failed to load node: " + entry.getValue().getAsJsonObject().get("t").getAsString());
             }
         });
         JsonObject edges = json.getAsJsonObject("e");

@@ -29,9 +29,6 @@ public class TestItem extends Item {
             if (spell != null) {
                 SaveSpell.saveToFile(spell);
             }
-            else {
-                System.out.println("no spell");
-            }
         }
 
         return super.use(level, player, usedHand);

@@ -3,6 +3,7 @@ package com.noodlegamer76.grimoires.spellcrafting.storage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.noodlegamer76.grimoires.GrimoiresMod;
 import com.noodlegamer76.grimoires.spellcrafting.Spell;
 
 import java.io.File;
@@ -39,13 +40,13 @@ public class SaveSpell {
             Path filePath = directoryPath.resolve(fileName);
             try (FileWriter writer = new FileWriter(filePath.toFile())) {
                 gson.toJson(jsonObject, writer);
-                System.out.println("JSON file saved successfully to: " + filePath);
+                GrimoiresMod.LOGGER.info("Spell JSON file saved successfully to: " + filePath);
             } catch (IOException e) {
-                System.err.println("Error writing JSON to file: " + e.getMessage());
+                GrimoiresMod.LOGGER.error("Error writing Spell JSON to file: " + e.getMessage());
                 e.printStackTrace();
             }
         } catch (IOException e) {
-            System.err.println("Error creating directories: " + e.getMessage());
+            GrimoiresMod.LOGGER.error("Error creating directories: " + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -114,9 +114,6 @@ public class SpellEditorRenderer {
             if (from != null && to != null && from.getType() == to.getType()) {
                 spell.getGraph().addEdge(from, to);
             }
-            else {
-                System.out.println("from: " + from + " to: " + to);
-            }
         }
 
         ImInt destroyedLinkId = new ImInt();
