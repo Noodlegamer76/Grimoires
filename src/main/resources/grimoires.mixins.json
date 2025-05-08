@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.noodlegamer76.grimoires.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "mixins.noodle_engine.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+    "RenderSystemMixin"
+  ],
+  "minVersion": "0.8"
+}
