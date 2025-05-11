@@ -5,6 +5,7 @@ import com.noodlegamer76.grimoires.imgui.ImGuiFontLoader;
 import com.noodlegamer76.grimoires.spellcrafting.SpellManager;
 import com.noodlegamer76.grimoires.item.InitItems;
 import com.noodlegamer76.grimoires.spellcrafting.Spell;
+import com.noodlegamer76.grimoires.spellcrafting.graph.nodes.InitNodes;
 import com.noodlegamer76.grimoires.spellcrafting.storage.InitDataComponentType;
 import com.noodlegamer76.grimoires.spellcrafting.storage.SaveSpell;
 import com.noodlegamer76.grimoires.spellcrafting.storage.SpellFileConstants;
@@ -43,6 +44,7 @@ public class GrimoiresMod
 
         InitItems.ITEMS.register(modEventBus);
         InitDataComponentType.DATA_COMPONENT_TYPES.register(modEventBus);
+        InitNodes.init();
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Grimoires) to respond directly to events.
@@ -53,8 +55,7 @@ public class GrimoiresMod
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
+    private void commonSetup(final FMLCommonSetupEvent event) {
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

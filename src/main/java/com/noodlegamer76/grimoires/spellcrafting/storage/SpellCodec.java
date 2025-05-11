@@ -6,9 +6,8 @@ import com.noodlegamer76.grimoires.network.spell.SpellPayload;
 import com.noodlegamer76.grimoires.spellcrafting.Spell;
 import com.noodlegamer76.grimoires.spellcrafting.graph.Edge;
 import com.noodlegamer76.grimoires.spellcrafting.graph.nodes.Node;
-import com.noodlegamer76.grimoires.spellcrafting.graph.nodes.NodeLoader;
+import com.noodlegamer76.grimoires.spellcrafting.graph.nodes.NodeRegistryUtils;
 import imgui.ImVec2;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 
@@ -82,6 +81,8 @@ public class SpellCodec implements StreamCodec<FriendlyByteBuf, SpellPayload> {
     }
 
     public static void encodeNode(FriendlyByteBuf buffer, Node node) {
+        buffer.writeInt(node.getPinVariant());
+        buffer.writeBoolean(node.isInput());
         buffer.writeUtf(node.getName());
         buffer.writeVarInt(node.getId());
         buffer.writeVarInt(node.getPins().size());
@@ -91,20 +92,24 @@ public class SpellCodec implements StreamCodec<FriendlyByteBuf, SpellPayload> {
     }
 
     public static Node decodeNode(FriendlyByteBuf buffer, Spell spell) {
+        int pinVariant = buffer.readInt();
+        boolean isInput = buffer.readBoolean();
         String name = buffer.readUtf();
         int id = buffer.readVarInt();
         int pinCount = buffer.readVarInt();
         String className = buffer.readUtf();
 
-        Node node = NodeLoader.load(className);
+        Node node = NodeRegistryUtils.getNode(className);
         if (node != null) {
             node.setId(id);
             node.setName(name);
+            node.setInput(isInput);
+            node.setPinVariant(pinVariant);
         }
 
         // Always read the pin data, even if node is null
         for (int i = 0; i < pinCount; i++) {
-            NodePin<?> pin = decodeNodePin(buffer, spell);
+            NodePin<?> pin = decodeNodePin(buffer, spell, node);
             if (node != null && pin != null) {
                 node.addPin(pin);
             }
@@ -121,7 +126,7 @@ public class SpellCodec implements StreamCodec<FriendlyByteBuf, SpellPayload> {
         buffer.writeUtf(pin.getType().getName());
     }
 
-    public static NodePin<?> decodeNodePin(FriendlyByteBuf buffer, Spell spell) {
+    public static NodePin<?> decodeNodePin(FriendlyByteBuf buffer, Spell spell, Node parentNode) {
         String name = buffer.readUtf();
         int id = buffer.readVarInt();
         int shape = buffer.readVarInt();
@@ -131,7 +136,9 @@ public class SpellCodec implements StreamCodec<FriendlyByteBuf, SpellPayload> {
         String className = buffer.readUtf();
         try {
             type = Class.forName(className);
-            return new NodePin<>(ioType, id, type, shape, name);
+            NodePin<?> pin = new NodePin<>(ioType, id, type, shape, name);
+            pin.setParentNode(parentNode);
+            return pin;
         } catch (ClassNotFoundException e) {
             GrimoiresMod.LOGGER.error("Could not find class for pin: " + name +
                     ", This error is most likely caused by an update or modified spell." +

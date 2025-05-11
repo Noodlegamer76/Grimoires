@@ -3,6 +3,7 @@ package com.noodlegamer76.grimoires.spellcrafting.gui.toolbar;
 import com.noodlegamer76.grimoires.spellcrafting.Spell;
 import com.noodlegamer76.grimoires.spellcrafting.SpellManager;
 import com.noodlegamer76.grimoires.spellcrafting.gui.SpellEditorRenderer;
+import com.noodlegamer76.grimoires.spellcrafting.gui.SpellEditorTools;
 import imgui.ImGui;
 import imgui.type.ImString;
 

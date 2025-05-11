@@ -24,7 +24,7 @@ public class TestItem extends Item {
             SpellEditorScreen.open(usedHand.ordinal());
             return InteractionResultHolder.success(player.getItemInHand(usedHand));
         }
-        if (player.isCrouching()) {
+        if (!level.isClientSide && player.isCrouching()) {
             Spell spell = SpellNbtLoader.getFromItem(player.getItemInHand(usedHand));
             if (spell != null) {
                 SaveSpell.saveToFile(spell);

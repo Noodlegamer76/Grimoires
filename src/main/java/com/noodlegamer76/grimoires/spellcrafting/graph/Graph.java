@@ -71,6 +71,42 @@ public class Graph {
         return null;
     }
 
+    public List<Node> getConnectedNodes(Node node) {
+        Set<Node> connected = new HashSet<>();
+
+        for (Edge edge : getAllEdges()) {
+            Node fromNode = edge.from().getParentNode();
+            Node toNode = edge.to().getParentNode();
+
+            if (fromNode == node && toNode != node) {
+                connected.add(toNode);
+            } else if (toNode == node && fromNode != node) {
+                connected.add(fromNode);
+            }
+        }
+
+        return new ArrayList<>(connected);
+    }
+
+    public Node getInputNode() {
+        Node input = null;
+        for (Node node : adjacencyList.keySet()) {
+            if (node.isInput()) {
+                if (input != null) {
+                    GrimoiresMod.LOGGER.error("Can't cast spell: Found more than one input node: " + node.getName() + " and " + input.getName() + " in the graph.");
+                    return null;
+                }
+                input = node;
+            }
+        }
+
+        if (input == null) {
+            GrimoiresMod.LOGGER.error("Can't cast spell: No input node found in the graph.");
+        }
+        return input;
+    }
+
+
     public void addEdge(NodePin<?> from, NodePin<?> to) {
         Edge edge = new Edge(from, to, nextId());
         Node fromNode = getNodeByPin(from);
@@ -108,6 +144,24 @@ public class Graph {
         for (Edge edge: allEdges) {
             if (edge.from().equals(node)) {
                 outgoing.add(edge);
+            }
+        }
+
+        return outgoing;
+    }
+
+    public List<Node> getOutgoingNodesFrom(Node node) {
+        List<Node> outgoing = new ArrayList<>();
+
+        for (Edge edge: getEdgesFrom(node)) {
+            int id = edge.to().getParentNode().getId();
+            Node toNode = getNodeById(id);
+
+            if (toNode != null) {
+                outgoing.add(toNode);
+            }
+            else {
+                GrimoiresMod.LOGGER.error("Failed to find node with id: " + id);
             }
         }
 

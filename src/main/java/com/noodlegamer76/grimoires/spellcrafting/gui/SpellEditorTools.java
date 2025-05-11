@@ -2,6 +2,7 @@ package com.noodlegamer76.grimoires.spellcrafting.gui;
 
 import com.noodlegamer76.grimoires.imgui.ChildWindowDragButton;
 import com.noodlegamer76.grimoires.imgui.NodeGrabberButton;
+import com.noodlegamer76.grimoires.spellcrafting.graph.nodes.InputNode;
 import com.noodlegamer76.grimoires.spellcrafting.graph.nodes.Node;
 import com.noodlegamer76.grimoires.spellcrafting.graph.nodes.TestNode;
 import com.noodlegamer76.grimoires.spellcrafting.Spell;
@@ -34,13 +35,14 @@ public class SpellEditorTools {
     }
 
     public void init() {
+        nodeGrabbers.clear();
+
         List<NodeGrabberButton<? extends Node>> iONodes = new ArrayList<>();
-        iONodes.add(new NodeGrabberButton<Node>(-1, "Test Node", TestNode::new));
-        iONodes.add(new NodeGrabberButton<Node>(-1, "Test Node", TestNode::new));
+        iONodes.add(new NodeGrabberButton<>(-1, "Test Node", TestNode::new, TestNode.class));
+        iONodes.add(new NodeGrabberButton<>(-1, "Input", InputNode::new, InputNode.class));
         nodeGrabbers.put("IO Nodes", iONodes);
 
         List<NodeGrabberButton<? extends Node>> calculationNodes = new ArrayList<>();
-        calculationNodes.add(new NodeGrabberButton<Node>(-1, "Test Node", TestNode::new));
         nodeGrabbers.put("Calculation Nodes", calculationNodes);
 
         List<NodeGrabberButton<? extends Node>> conversionNodes = new ArrayList<>();

@@ -10,13 +10,7 @@ public class NodePin<T> {
     private String name = "Pin";
     private T data;
     private Class<T> type;
-
-    public NodePin(IOType iOType, int id, Class<T> type, String name) {
-        this.iOType = iOType;
-        this.id = id;
-        this.name = name;
-        this.type = type;
-    }
+    private Node parentNode;
 
     public NodePin(IOType iOType, int id, Class<T> type, int shape, String name) {
         this.iOType = iOType;
@@ -26,16 +20,17 @@ public class NodePin<T> {
         this.type = type;
     }
 
-    public NodePin(IOType iOType, int id, Class<T> type) {
-        this.iOType = iOType;
-        this.id = id;
-        this.type = type;
-    }
-
     public NodePin(IOType iOType, int id, Class<T> type, int shape) {
         this.iOType = iOType;
         this.id = id;
         this.shape = shape;
+        this.type = type;
+    }
+
+    public NodePin(IOType iOType, Class<T> type, int shape, String name) {
+        this.iOType = iOType;
+        this.shape = shape;
+        this.name = name;
         this.type = type;
     }
 
@@ -83,6 +78,14 @@ public class NodePin<T> {
         this.type = type;
     }
 
+    public Node getParentNode() {
+        return parentNode;
+    }
+
+    public void setParentNode(Node parentNode) {
+        this.parentNode = parentNode;
+    }
+
     public JsonObject save() {
         JsonObject pin = new JsonObject();
         pin.addProperty("s", getShape());
@@ -93,7 +96,7 @@ public class NodePin<T> {
         return pin;
     }
 
-    public static NodePin<?> load(JsonObject jsonObject, Node node) {
+    public static void load(JsonObject jsonObject, Node node) {
         int pinId = jsonObject.get("id").getAsInt();
         int shape = jsonObject.get("s").getAsInt();
         String typeName = jsonObject.get("t").getAsString();
@@ -107,10 +110,8 @@ public class NodePin<T> {
             NodePin<?> pin = new NodePin<>(ioType, pinId, clazz, shape);
             pin.setName(name);
             node.addPin(pin);
-            return pin;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            return null;
         }
     }
 

@@ -154,4 +154,8 @@ public class SpellEditorRenderer {
     public int getHand() {
         return hand;
     }
+
+    public SpellEditorTools getSpellEditorTools() {
+        return spellEditorTools;
+    }
 }

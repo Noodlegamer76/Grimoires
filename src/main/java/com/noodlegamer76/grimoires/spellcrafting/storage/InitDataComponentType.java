@@ -13,4 +13,10 @@ public class InitDataComponentType {
             () -> new DataComponentType.Builder<SpellData>()
                     .persistent(SpellData.CODEC)
                     .build());
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<WandData>> WAND_DATA = DATA_COMPONENT_TYPES.register("wand_data",
+            () -> new DataComponentType.Builder<WandData>()
+                    .networkSynchronized(WandData.STREAM_CODEC)
+                    .persistent(WandData.CODEC)
+                    .build());
 }

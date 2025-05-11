@@ -1,8 +1,9 @@
 package com.noodlegamer76.grimoires.imgui;
 
 import com.noodlegamer76.grimoires.spellcrafting.graph.nodes.Node;
+import com.noodlegamer76.grimoires.spellcrafting.graph.nodes.NodeHolder;
+import com.noodlegamer76.grimoires.spellcrafting.graph.nodes.NodeRegistryUtils;
 import com.noodlegamer76.grimoires.spellcrafting.gui.SpellEditorRenderer;
-import com.noodlegamer76.grimoires.spellcrafting.gui.SpellEditorTools;
 import imgui.ImGui;
 import imgui.flag.ImGuiCol;
 
@@ -13,11 +14,13 @@ public class NodeGrabberButton<T extends Node> {
     private int current;
     private final String name;
     private final Supplier<T> nodeSupplier;
+    private final NodeHolder<? extends Node> nodeHolder;
 
-    public NodeGrabberButton(int max, String name, Supplier<T> nodeSupplier) {
+    public NodeGrabberButton(int max, String name, Supplier<T> nodeSupplier, Class<T> nodeClass) {
         this.max = max;
         this.name = name;
         this.nodeSupplier = nodeSupplier;
+        nodeHolder = NodeRegistryUtils.getNodeHolder(nodeClass);
     }
 
     public void renderNoLimits() {
@@ -31,6 +34,10 @@ public class NodeGrabberButton<T extends Node> {
     }
 
     public void render() {
+        if (nodeHolder != null && nodeHolder.isLocked()) {
+            return;
+        }
+
         if (max == -1) {
             ImGui.button(name);
         }
@@ -48,7 +55,7 @@ public class NodeGrabberButton<T extends Node> {
         if ((current < max || max == -1) && ImGui.isItemActivated()) {
             Node node = nodeSupplier.get();
             node.setId(SpellEditorRenderer.getInstance().getSpell().getGraph().nextId());
-            node.init();
+            node.initForSpellEditor(0);
             SpellEditorRenderer.getInstance().setDraggedNode(node);
             if (max != -1) {
                 current++;
